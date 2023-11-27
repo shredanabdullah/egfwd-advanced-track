@@ -16,9 +16,30 @@ void HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
 
 // Function prototypes for the Cortex-M interrupt vectors
 void Default_Handler(void);
+/*
+__attribute__((section(".isr_vector"))): This is an attribute that specifies 
+that the following variable (g_pfnVectors) should be placed in the section named .isr_vector. 
+This section typically contains the interrupt vector table.
+
+void (*const g_pfnVectors[])(void): This declares g_pfnVectors as an array of function pointers to functions 
+that take no arguments and return void. 
+This array represents the interrupt vector table.
+
+_estack: This is the initial stack pointer. 
+The first entry in the vector table points to the initial stack pointer value. 
+This value is defined in the linker script and represents the top of the stack memory.
+
+Reset_Handler: This is the function that will be called on a system reset. 
+It initializes the system and then calls the main function.
+
+NMI_Handler: This is the Non-Maskable Interrupt handler. 
+It's a weak function, meaning it can be overridden by a stronger definition elsewhere.
+HardFault_Handler: This is the Hard Fault handler. Like NMI_Handler, it's a weak function.*/
 
 // The vector table, placed at the beginning of the program in memory
 __attribute__((section(".isr_vector")))
+/*g_pfnVectors as an array of function pointers to functions that take no arguments and return void. 
+This array represents the interrupt vector table.*/
 void (*const g_pfnVectors[])(void) = {
     // Core Level - CM4
     &_estack,               // The initial stack pointer
